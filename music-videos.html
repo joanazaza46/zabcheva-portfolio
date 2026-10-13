@@ -1,1 +1,38 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Music Videos — Joanna Zabcheva</title><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head><body><header class="site-header"><a class="brand" href="index.html">JOANNA ZABCHEVA<small>CINEMATOGRAPHER · VISUAL ARTIST</small></a><div class="header-right"><nav class="nav"><a href="index.html">SELECTED WORK</a><a class="active" href="music-videos.html">MUSIC VIDEOS</a><a href="films.html">FILMS</a><a href="stills.html">STILLS</a><a href="about.html">INFO / CONTACT</a></nav><a class="social" href="https://www.instagram.com/sminduh_/" target="_blank" rel="noreferrer">INSTAGRAM ↗</a></div></header><main><section class="page-intro"><div><p class="eyebrow">01 / MOVING IMAGE</p><h1 class="page-title">Music videos</h1></div><p class="intro-note">Rhythm, performance,<br>light and atmosphere.</p></section><section class="work-grid"><a class="project-card" href="about.html"><div class="thumb scene-1"><span class="thumb-tag">MV · 01</span></div><div class="project-info"><div><h2 class="project-title">Project title</h2><p class="project-credit">Artist name · Year · DOP</p></div><span class="project-arrow">↗</span></div></a><a class="project-card" href="about.html"><div class="thumb scene-3"><span class="thumb-tag">MV · 02</span></div><div class="project-info"><div><h2 class="project-title">Untitled / visual study</h2><p class="project-credit">Artist name · Year · DOP</p></div><span class="project-arrow">↗</span></div></a><a class="project-card" href="about.html"><div class="thumb scene-5"><span class="thumb-tag">MV · 03</span></div><div class="project-info"><div><h2 class="project-title">Night sequence</h2><p class="project-credit">Artist name · Year · DOP</p></div><span class="project-arrow">↗</span></div></a><a class="project-card" href="about.html"><div class="thumb scene-7"><span class="thumb-tag">MV · 04</span></div><div class="project-info"><div><h2 class="project-title">Green room</h2><p class="project-credit">Artist name · Year · DOP</p></div><span class="project-arrow">↗</span></div></a><a class="project-card" href="about.html"><div class="thumb scene-9"><span class="thumb-tag">MV · 05</span></div><div class="project-info"><div><h2 class="project-title">Blue hour</h2><p class="project-credit">Artist name · Year · DOP</p></div><span class="project-arrow">↗</span></div></a><a class="project-card" href="about.html"><div class="thumb scene-10"><span class="thumb-tag">MV · 06</span></div><div class="project-info"><div><h2 class="project-title">Another song</h2><p class="project-credit">Artist name · Year · DOP</p></div><span class="project-arrow">↗</span></div></a></section><p class="empty-note">PROJECT TITLES, CREDITS AND VIDEO LINKS TO BE ADDED</p></main><footer class="site-footer"><span>JOANNA ZABCHEVA © 2026</span><span>MUSIC VIDEOS</span><a href="about.html">CONTACT ↗</a></footer><script src="script.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <title>Music Videos — Joanna Zabcheva</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">JOANNA ZABCHEVA<small>CINEMATOGRAPHER · VISUAL ARTIST</small></a>
+    <div class="header-right">
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">SELECTED WORK</a><a class="active" href="music-videos.html">MUSIC VIDEOS</a><a href="films.html">FILMS</a><a href="stills.html">STILLS</a><a href="about.html">INFO / CONTACT</a>
+      </nav>
+      <a class="social" href="https://www.instagram.com/sminduh_/" target="_blank" rel="noreferrer">INSTAGRAM ↗</a>
+    </div>
+  </header>
+  <main>
+    <section class="page-intro"><div><p class="eyebrow">01 / MOVING IMAGE</p><h1 class="page-title">Music videos</h1></div><p class="intro-note">Rhythm, performance,<br>light and atmosphere.</p></section>
+    <section class="work-grid music-grid" aria-label="Music video projects">
+      <button class="project-card video-card" type="button" data-video="lcQk0x9zoAI" aria-label="Play Просто фаза">
+        <div class="thumb video-thumb"><img src="https://i.ytimg.com/vi/lcQk0x9zoAI/maxresdefault.jpg" alt="Still from Просто фаза music video" loading="eager"><span class="thumb-tag">MV · 01</span></div>
+        <span class="project-info"><span><span class="project-title">Просто фаза</span><span class="project-credit">Music video · DOP</span></span><span class="project-arrow" aria-hidden="true">↗</span></span>
+      </button>
+    </section>
+  </main>
+  <footer class="site-footer"><span>JOANNA ZABCHEVA © 2026</span><span>MUSIC VIDEOS</span><a href="about.html">CONTACT ↗</a></footer>
+
+  <div class="video-lightbox" id="video-lightbox" role="dialog" aria-modal="true" aria-label="Music video player" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close video">×</button>
+    <div class="video-frame-wrap"><iframe id="video-frame" title="Просто фаза — music video" src="" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
