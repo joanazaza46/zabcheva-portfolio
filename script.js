@@ -1,5 +1,6 @@
 // PORTFOLIO CONTENT — edit titles, categories and filenames here.
 const projects = [
+  {title:"WILDHEART",credit:"MUSIC VIDEO · DOP",category:"Music videos",video:"https://YOUR-R2-PUBLIC-URL/WILDHEART.mp4"},
   {title:"PROJECT TITLE 01",credit:"MUSIC VIDEO · DOP",category:"Music videos",video:"project-01.mp4"},
   {title:"PROJECT TITLE 02",credit:"FASHION FILM · DOP",category:"Fashion films",video:"project-02.mp4"},
   {title:"PROJECT TITLE 03",credit:"SHORT FILM · DOP",category:"Short films",video:"project-03.mp4"},
@@ -36,6 +37,23 @@ document.querySelectorAll(".theme-toggle").forEach(button => {
   update();button.addEventListener("click",()=>{const next=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=next;try{localStorage.setItem("yz-theme",next)}catch(e){}update();});
 });
 const year=document.querySelector("#year");if(year)year.textContent=new Date().getFullYear();
+// Copy the contact email instead of opening a mail application.
+document.querySelectorAll("[data-email-copy]").forEach(button=>{
+ const label=button.querySelector("span");
+ const original=label?label.textContent:"COPY ↗";
+ button.addEventListener("click",async()=>{
+  const email=button.dataset.emailCopy;
+  try{
+   if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(email);}
+   else{
+    const field=document.createElement("textarea");field.value=email;field.setAttribute("readonly","");field.style.position="fixed";field.style.opacity="0";document.body.append(field);field.select();
+    const copied=document.execCommand("copy");field.remove();if(!copied)throw new Error("Clipboard copy failed");
+   }
+   if(label){label.textContent="COPIED ✓";button.setAttribute("aria-label","Email address copied");}
+   window.setTimeout(()=>{if(label)label.textContent=original;button.setAttribute("aria-label","Copy email address");},1800);
+  }catch(error){button.setAttribute("aria-label","Could not copy email address");if(label)label.textContent="SELECT EMAIL";}
+ });
+});
 function empty(container,message){if(!container)return;const el=document.createElement("div");el.className="empty-gallery";el.textContent=message;container.appendChild(el);}
 function filters(bar,items,allLabel="All"){
  if(!bar)return;const cats=[...new Set(items.map(x=>x.category).filter(Boolean))];
@@ -49,8 +67,9 @@ if(document.body.dataset.page==="photos")renderImages(imageGrid,filmPhotos,"Add 
 if(document.body.dataset.page==="art")renderImages(imageGrid,artProjects,"Add your printmaking, sketchbook and painting images to the matching folders and register them in script.js.",bar);
 
 // Video project grid and fullscreen player.
+function videoSource(item){return /^https?:\/\//i.test(item.video)?item.video:`../assets/videos/${item.video}`;}
 const grid=document.querySelector("#work"),viewer=document.querySelector("#viewer"),viewerVideo=document.querySelector("#viewerVideo");let activeIndex=0;
-function showVideo(index){if(!viewer||!viewerVideo)return;activeIndex=(index+projects.length)%projects.length;const item=projects[activeIndex];viewerVideo.src=`../assets/videos/${item.video}`;viewer.classList.add("open");viewer.setAttribute("aria-hidden","false");document.querySelector("#viewerTitle").textContent=item.title;document.querySelector("#viewerCredit").textContent=item.credit;viewerVideo.play().catch(()=>{});}
+function showVideo(index){if(!viewer||!viewerVideo)return;activeIndex=(index+projects.length)%projects.length;const item=projects[activeIndex];viewerVideo.src=videoSource(item);viewer.classList.add("open");viewer.setAttribute("aria-hidden","false");document.querySelector("#viewerTitle").textContent=item.title;document.querySelector("#viewerCredit").textContent=item.credit;viewerVideo.play().catch(()=>{});}
 function closeVideo(){if(!viewer)return;viewer.classList.remove("open");viewer.setAttribute("aria-hidden","true");if(viewerVideo){viewerVideo.pause();viewerVideo.removeAttribute("src");viewerVideo.load();}}
-if(grid){filters(bar,projects);projects.forEach((project,index)=>{const card=document.createElement("article");card.className="project";card.dataset.categoryCard=project.category;card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`Play ${project.title}`);const media=document.createElement("div");media.className="media";const video=document.createElement("video");video.src=`../assets/videos/${project.video}`;video.muted=true;video.loop=true;video.playsInline=true;video.preload="metadata";video.addEventListener("mouseenter",()=>video.play().catch(()=>{}));video.addEventListener("mouseleave",()=>{video.pause();video.currentTime=0;});media.append(video);const info=document.createElement("div");info.className="project-info";const title=document.createElement("span");title.className="project-title";title.textContent=project.title;const meta=document.createElement("span");meta.className="project-meta";meta.textContent=project.credit;info.append(title,meta);card.append(media,info);card.addEventListener("click",()=>showVideo(index));card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();showVideo(index);}});grid.append(card);});}
+if(grid){filters(bar,projects);projects.forEach((project,index)=>{const card=document.createElement("article");card.className="project";card.dataset.categoryCard=project.category;card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`Play ${project.title}`);const media=document.createElement("div");media.className="media";const video=document.createElement("video");video.src=videoSource(project);video.muted=true;video.loop=true;video.playsInline=true;video.preload="metadata";video.addEventListener("mouseenter",()=>video.play().catch(()=>{}));video.addEventListener("mouseleave",()=>{video.pause();video.currentTime=0;});media.append(video);const info=document.createElement("div");info.className="project-info";const title=document.createElement("span");title.className="project-title";title.textContent=project.title;const meta=document.createElement("span");meta.className="project-meta";meta.textContent=project.credit;info.append(title,meta);card.append(media,info);card.addEventListener("click",()=>showVideo(index));card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();showVideo(index);}});grid.append(card);});}
 const close=document.querySelector("#viewerClose"),prev=document.querySelector("#viewerPrev"),next=document.querySelector("#viewerNext");if(close)close.addEventListener("click",closeVideo);if(prev)prev.addEventListener("click",()=>showVideo(activeIndex-1));if(next)next.addEventListener("click",()=>showVideo(activeIndex+1));if(viewer)viewer.addEventListener("click",e=>{if(e.target===viewer)closeVideo();});document.addEventListener("keydown",e=>{if(!viewer?.classList.contains("open"))return;if(e.key==="Escape")closeVideo();if(e.key==="ArrowLeft")showVideo(activeIndex-1);if(e.key==="ArrowRight")showVideo(activeIndex+1);});

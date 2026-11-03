@@ -1,1 +1,1 @@
-Add exactly three images here, named bts-01.jpg, bts-02.jpg and bts-03.jpg. The homepage About section displays these three photographs.
+Add exactly three images here, named bts-01.jpg.webp, bts-02.jpg.webp and bts-03.jpg.webp. The homepage About section displays these three photographs.
