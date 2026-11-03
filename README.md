@@ -1,94 +1,43 @@
-# Yoanna Zabcheva — Portfolio
+# Yoanna Zabcheva — Portfolio · Version 2
 
-A minimal, responsive, static portfolio for Cloudflare Pages / GitHub. No build step or framework required.
+Minimal static portfolio for GitHub / Cloudflare Pages. No build step required.
 
-## What's included
+## Version 2 changes
+- Gmail contact updated to **joanazaza46@gmail.com** (clickable mailto link).
+- Main intro caption is now simply **Portfolio**.
+- Contact navigation reads **CONTACT ME**; removed the large “Have a project in mind?” callout.
+- Video projects have filters: Music videos, Fashion films, Short films, Commercials, Documentaries and Other projects.
+- Film photography has filters for 35mm, 120 film and Digital.
+- “Drawings” renamed **Art projects**, with Printmaking, Sketchbook and Paintings filters.
+- Biography and exactly three BTS photo slots are grouped in a dedicated About section.
+- Light/dark theme preference remains shared across pages.
 
-- Home page with the existing introduction text preserved.
-- Top-right descriptor updated to **CINEMATOGRAPHER, VISUAL ARTIST**.
-- Three separate portfolio collections: Video Projects, Film Photography and Drawings.
-- Dedicated pages for each collection.
-- Behind-the-scenes section at the bottom of the home page.
-- Light / dark theme toggle. The visitor's choice is remembered in their browser.
-- Instagram link currently points to `https://www.instagram.com/sminduh_/`.
-- Responsive layout, keyboard-accessible video viewer and hover previews.
+## Add your content
 
-## IMPORTANT: add your email before publishing
+### Video projects
+Put MP4s in `assets/videos/` named `project-01.mp4` through `project-11.mp4`. Edit titles, credits and categories in `script.js`.
 
-In `index.html`, replace both instances of `YOUR_GMAIL_ADDRESS@gmail.com` with your real Gmail address. The contact link will then open an email draft to you.
-
-## Add the 11 video projects
-
-Put compressed MP4 files in `assets/videos/` using these names, or change the filenames in the `projects` list in `script.js`:
-
-- `project-01.mp4` through `project-11.mp4`
-
-Edit each project's `title` and `credit` in `script.js`. For best results, use H.264 MP4 previews that are reasonably small. Optional poster images can go in `assets/posters/`; set the matching `poster` value in `script.js` to `assets/posters/your-image.jpg`.
-
-The videos are shown on `video-projects/index.html`, reached from the Video Projects collection on the home page.
-
-## Add film photography
-
-1. Put JPG or WebP images in `assets/film-photography/`.
-2. Open `script.js` and add an item to the `filmPhotos` list, for example:
+### Film photography
+Put images in the matching folders: `assets/film-photography/35mm/`, `120/`, or `digital/`. Then add entries to `filmPhotos` in `script.js`, using paths relative to `film-photography/index.html`, for example:
 
 ```js
-{ title: "Untitled 01", file: "../assets/film-photography/01.jpg", note: "35mm · 2026" }
+{title:"Untitled 01",file:"../assets/film-photography/35mm/01.jpg",category:"35mm",note:"35mm · 2026"}
 ```
 
-The path is relative to the film photography page, so use `../assets/...`.
-
-## Add drawings
-
-1. Put JPG or WebP images in `assets/drawings/`.
-2. Add each image to the `drawings` list in `script.js`, for example:
+### Art projects
+Put images in `assets/art-projects/printmaking/`, `sketchbook/`, or `paintings/`. Add entries to `artProjects` in `script.js`, for example:
 
 ```js
-{ title: "Study 01", file: "../assets/drawings/01.jpg", note: "Graphite on paper" }
+{title:"Study 01",file:"../assets/art-projects/sketchbook/01.jpg",category:"Sketchbook",note:"Sketchbook"}
 ```
 
-## Add behind-the-scenes photographs
+### Three BTS photographs
+Add exactly three images to `assets/bts/` with these names:
+- `bts-01.jpg`
+- `bts-02.jpg`
+- `bts-03.jpg`
 
-1. Put your on-set photographs in `assets/bts/`.
-2. Add them to the `btsPhotos` list in `script.js`, for example:
+The About section displays these three slots. Replace the files with your own images; no script edits are needed if you keep the filenames.
 
-```js
-{ file: "assets/bts/set-01.jpg", alt: "Behind the scenes on set" }
-```
-
-The BTS section appears at the bottom of the home page. Use landscape images for a consistent strip; the layout crops to a 4:3 frame.
-
-## Folder structure
-
-```text
-index.html
-style.css
-script.js
-video-projects/index.html
-film-photography/index.html
-drawings/index.html
-assets/
-  videos/
-  posters/
-  film-photography/
-  drawings/
-  bts/
-```
-
-## Deploy to the existing website
-
-Your domain is already connected through Cloudflare Pages. Keep using the same GitHub repository connected to that Cloudflare Pages project:
-
-1. Download and unzip this package.
-2. Upload the **contents** of `yoanna-video-portfolio` to the root of your connected GitHub repository. Do not upload the ZIP file itself and do not put the folder inside another folder.
-3. Replace the email placeholder and add your media files before publishing.
-4. Commit the changes to the production branch (previously configured as `main`). Cloudflare Pages should automatically build and deploy; no build command is needed and the output directory is `/`.
-
-Do not change the existing custom domain or DNS settings for this update.
-
-## Notes
-
-- This is a static site: there is no build command.
-- Keep video previews compressed. Large full-resolution source videos are better hosted outside the Git repository.
-- The image collections are intentionally left ready for your own photographs and drawings; no stock imagery is inserted into your portfolio.
-- The typography and geometric layout are an original implementation inspired by the restrained editorial feel of your reference, not a copy of its code or assets.
+## Publish
+Upload the **contents** of `yoanna-video-portfolio` to the root of the existing GitHub repository, replacing the previous version. Commit to `main`; Cloudflare Pages should deploy automatically. Do not change DNS or the custom domain.

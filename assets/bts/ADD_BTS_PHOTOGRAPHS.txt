@@ -1,1 +1,1 @@
-Add your behind-the-scenes / on-set photographs here. Then list each image in the btsPhotos array in script.js (use assets/bts/filename.jpg as its file path).
+Add exactly three images here, named bts-01.jpg, bts-02.jpg and bts-03.jpg. The homepage About section displays these three photographs.
