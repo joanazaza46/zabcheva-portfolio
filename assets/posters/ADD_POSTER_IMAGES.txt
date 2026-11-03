@@ -1,0 +1,1 @@
+Optional: add poster JPG/WebP files here and set poster paths in the projects list in script.js.

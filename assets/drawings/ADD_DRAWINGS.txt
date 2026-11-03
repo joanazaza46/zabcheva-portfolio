@@ -1,0 +1,1 @@
+Add JPG/WebP drawings here. Then list each image in the drawings array in ../script.js (use ../assets/drawings/filename.jpg as its file path).

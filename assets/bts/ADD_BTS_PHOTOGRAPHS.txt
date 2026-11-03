@@ -1,0 +1,1 @@
+Add your behind-the-scenes / on-set photographs here. Then list each image in the btsPhotos array in script.js (use assets/bts/filename.jpg as its file path).

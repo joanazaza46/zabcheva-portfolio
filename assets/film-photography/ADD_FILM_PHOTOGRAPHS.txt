@@ -1,0 +1,1 @@
+Add JPG/WebP film photographs here. Then list each image in the filmPhotos array in ../script.js (use ../assets/film-photography/filename.jpg as its file path).
