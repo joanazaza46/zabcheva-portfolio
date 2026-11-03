@@ -1,50 +1,30 @@
-# Joanna Zabcheva — Portfolio V4
+# Yoanna Zabcheva — video portfolio
 
-A minimal, responsive, image-first cinematography portfolio inspired by the restrained editorial feel of the reference site. It is an original implementation and does not reuse that site's code or imagery.
+A lightweight, responsive portfolio site with 11 video projects.
 
-## Features
-- 11-project grid with understated typography and a warm off-white background
-- Muted looping video previews on hover (desktop)
-- Click to open a fullscreen-style overlay on the same page
-- Self-hosted MP4 playback with native controls
-- First project, “Просто фаза” — DOP; falls back to its YouTube embed until the local MP4 is uploaded
-- Mobile-friendly layout; no hover autoplay on touch devices
-- No build step; works as a static Cloudflare Pages site
+## Add your videos
+1. Compress/export each clip as an MP4 (H.264 is a good web-friendly choice).
+2. Copy the 11 MP4 files into `assets/videos/`.
+3. Rename them to `project-01.mp4` through `project-11.mp4`, **or** edit the `video` values in `script.js` to match your filenames.
+4. Edit each project's `title` and `credit` in the same `projects` list.
+5. In `index.html`, replace `hello@example.com` with your contact email. Edit the name, intro and location text if desired.
 
-## Add your 11 clips
+## Optional poster thumbnails
+For the quickest setup, the video itself is used as the thumbnail and plays muted on hover. For a still poster:
+- Add an image (JPG or WebP) to `assets/posters/`, e.g. `project-01.webp`.
+- Set that project's `poster` value in `script.js` to `assets/posters/project-01.webp`.
+- A poster image is shown before hover; the video preview plays on hover.
 
-Put MP4 files in `assets/videos/` with these exact names, or update the matching `data-local` and `<source>` values in `index.html`:
+## Publish with GitHub Pages
+1. Create a GitHub repository (e.g. `yoanna-portfolio`).
+2. Upload the contents of this folder to the repository root (not the ZIP file itself).
+3. In the repository, open **Settings → Pages**.
+4. Choose **Deploy from a branch**, select `main` and `/ (root)`, then Save.
+5. Wait for the published URL to appear in the Pages section.
 
-1. `01-prosto-faza.mp4`
-2. `02-project.mp4`
-3. `03-project.mp4`
-4. `04-project.mp4`
-5. `05-project.mp4`
-6. `06-project.mp4`
-7. `07-project.mp4`
-8. `08-project.mp4`
-9. `09-project.mp4`
-10. `10-project.mp4`
-11. `11-project.mp4`
-
-For the first project, the YouTube video ID `lcQk0x9zoAI` is configured as a fallback. Hover previews require the actual local MP4; YouTube embeds cannot be used as a normal muted inline preview in this simple grid.
-
-## Add clean thumbnails
-
-Export one frame from each clip as a JPG and put it in `assets/posters/` using the corresponding names:
-
-- `01-prosto-faza.jpg` through `11-project.jpg`
-
-Use a 16:10-ish crop (e.g. 1200×800). These are plain still images; no play icon or YouTube branding is added. Until posters are added, numbered neutral placeholders appear.
-
-## Edit project titles and credits
-
-In `index.html`, each project card has `data-title` and `data-credit` attributes and matching visible text. Replace “Project 02” etc. with the real titles and credits. Update the category credit as needed (e.g. `MUSIC VIDEO · DOP`, `SHORT FILM · DOP`).
-
-## Important GitHub note
-
-GitHub has per-file size limits (web uploads are especially limited), and GitHub Pages/Cloudflare Pages are not ideal for hosting large original video files. Compress preview MP4s for the hover grid and keep each file small. For full-length or high-bitrate videos, consider a video host/object storage/CDN and keep only lightweight preview clips in the repository. Use H.264 MP4, muted preview playback, and compressed poster JPGs for best performance.
-
-## Deploy
-
-Upload the **contents** of this folder to the root of your GitHub repository. `index.html` must be at the repository root. Connect the repo to Cloudflare Pages with no build command and the root directory as the project root.
+## Notes
+- The site uses relative file paths, so it works on GitHub Pages.
+- Video playback depends on browser support and bandwidth. Keep MP4 files reasonably compressed.
+- Hover preview is for mouse/trackpad; clicking or tapping a project opens the larger player.
+- The viewer includes previous/next controls and closes with Escape.
+- The page is intentionally built without a framework or build step.

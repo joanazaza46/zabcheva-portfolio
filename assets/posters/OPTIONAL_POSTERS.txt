@@ -1,0 +1,1 @@
+Optional: place poster images here and reference them in script.js.

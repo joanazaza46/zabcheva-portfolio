@@ -1,103 +1,102 @@
-(() => {
-  const cards = [...document.querySelectorAll('.project')];
-  const lightbox = document.getElementById('lightbox');
-  const player = document.getElementById('player');
-  const closeButton = document.querySelector('.close');
-  const modalTitle = document.getElementById('modal-title');
-  const modalCredit = document.getElementById('modal-credit');
-  let activeCard = null;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Edit this list to change project names, credits and video filenames.
+// Put your compressed MP4 files in assets/videos/ and use the exact filename below.
+const projects = [
+  { title: "PROJECT TITLE 01", credit: "MUSIC VIDEO · DOP", video: "project-01.mp4", poster: "" },
+  { title: "PROJECT TITLE 02", credit: "FASHION FILM · DOP", video: "project-02.mp4", poster: "" },
+  { title: "PROJECT TITLE 03", credit: "SHORT FILM · DOP", video: "project-03.mp4", poster: "" },
+  { title: "PROJECT TITLE 04", credit: "COMMERCIAL · DIR / DOP", video: "project-04.mp4", poster: "" },
+  { title: "PROJECT TITLE 05", credit: "DOCUMENTARY · DIR / DOP", video: "project-05.mp4", poster: "" },
+  { title: "PROJECT TITLE 06", credit: "MUSIC VIDEO · DOP", video: "project-06.mp4", poster: "" },
+  { title: "PROJECT TITLE 07", credit: "FASHION FILM · DOP", video: "project-07.mp4", poster: "" },
+  { title: "PROJECT TITLE 08", credit: "SHORT FILM · DIR / DOP", video: "project-08.mp4", poster: "" },
+  { title: "PROJECT TITLE 09", credit: "COMMERCIAL · DOP", video: "project-09.mp4", poster: "" },
+  { title: "PROJECT TITLE 10", credit: "MUSIC VIDEO · DIR / DOP", video: "project-10.mp4", poster: "" },
+  { title: "PROJECT TITLE 11", credit: "SELECTED WORK · DOP", video: "project-11.mp4", poster: "" }
+];
 
-  function playPreview(card) {
-    if (reduceMotion || window.matchMedia('(hover: none)').matches) return;
-    const video = card.querySelector('.hover-video');
-    if (!video) return;
-    const attempt = video.play();
-    if (attempt && typeof attempt.then === 'function') {
-      attempt.then(() => card.classList.add('is-playing')).catch(() => {});
-    } else card.classList.add('is-playing');
+const grid = document.querySelector("#work");
+const viewer = document.querySelector("#viewer");
+const viewerVideo = document.querySelector("#viewerVideo");
+const viewerTitle = document.querySelector("#viewerTitle");
+const viewerCredit = document.querySelector("#viewerCredit");
+let activeIndex = 0;
+
+projects.forEach((project, index) => {
+  const card = document.createElement("article");
+  card.className = "project";
+  card.tabIndex = 0;
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-label", `Play ${project.title}`);
+
+  const media = document.createElement("div");
+  media.className = "media";
+
+  const preview = document.createElement("video");
+  preview.src = `assets/videos/${project.video}`;
+  preview.muted = true;
+  preview.loop = true;
+  preview.playsInline = true;
+  preview.preload = "metadata";
+  preview.setAttribute("aria-hidden", "true");
+  if (project.poster) preview.poster = project.poster;
+
+  media.appendChild(preview);
+
+  if (project.poster) {
+    const poster = document.createElement("img");
+    poster.src = project.poster;
+    poster.alt = "";
+    poster.loading = "lazy";
+    media.appendChild(poster);
   }
-  function stopPreview(card) {
-    const video = card.querySelector('.hover-video');
-    if (!video) return;
-    video.pause();
-    try { video.currentTime = 0; } catch (_) {}
-    card.classList.remove('is-playing');
-  }
-  cards.forEach(card => {
-    const video = card.querySelector('.hover-video');
-    const poster = card.querySelector('.poster');
-    if (poster) {
-      poster.addEventListener('load', () => { if (poster.naturalWidth) card.querySelector('.media').classList.add('has-poster'); });
-      poster.addEventListener('error', () => poster.remove());
-      if (poster.complete && poster.naturalWidth) card.querySelector('.media').classList.add('has-poster');
-    }
-    if (video) {
-      video.addEventListener('loadeddata', () => card.querySelector('.media').classList.add('has-poster'));
-      video.addEventListener('error', () => { /* A missing local clip leaves the clean placeholder visible. */ });
-    }
-    card.addEventListener('mouseenter', () => playPreview(card));
-    card.addEventListener('mouseleave', () => stopPreview(card));
-    card.addEventListener('focus', () => playPreview(card));
-    card.addEventListener('blur', () => stopPreview(card));
-    card.addEventListener('click', () => openVideo(card));
+
+  const info = document.createElement("div");
+  info.className = "project-info";
+  info.innerHTML = `<span class="project-title"></span><span class="project-meta"></span>`;
+  info.querySelector(".project-title").textContent = project.title;
+  info.querySelector(".project-meta").textContent = project.credit;
+  card.append(media, info);
+
+  card.addEventListener("mouseenter", () => preview.play().catch(() => {}));
+  card.addEventListener("mouseleave", () => { preview.pause(); preview.currentTime = 0; });
+  card.addEventListener("click", () => openViewer(index));
+  card.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openViewer(index); }
   });
-  function openVideo(card) {
-    activeCard = card;
-    cards.forEach(stopPreview);
-    const title = card.dataset.title || 'Selected work';
-    const credit = card.dataset.credit || 'CINEMATOGRAPHY';
-    const localPath = card.dataset.local;
-    const yt = card.dataset.youtube;
-    modalTitle.textContent = title;
-    modalCredit.textContent = credit;
-    player.replaceChildren();
-    // Self-hosted clips use the browser's native player. If a local file isn't uploaded yet,
-    // the first project gracefully falls back to its YouTube embed.
-    if (localPath && !card.dataset.youtubeFallback) {
-      const video = document.createElement('video');
-      video.controls = true;
-      video.autoplay = true;
-      video.playsInline = true;
-      video.preload = 'auto';
-      video.src = localPath;
-      video.addEventListener('error', () => {
-        if (yt && player.contains(video)) {
-          card.dataset.youtubeFallback = 'true';
-          video.remove();
-          addYoutube(yt, title);
-        }
-      }, { once: true });
-      player.append(video);
-      video.play().catch(() => {});
-    } else if (yt) addYoutube(yt, title);
-    else {
-      const message = document.createElement('p');
-      message.className = 'missing-video';
-      message.textContent = 'Add this project video at ' + localPath;
-      player.append(message);
-    }
-    lightbox.hidden = false;
-    document.body.classList.add('modal-open');
-    closeButton.focus();
-  }
-  function addYoutube(id, title) {
-    const frame = document.createElement('iframe');
-    frame.title = title;
-    frame.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0&modestbranding=1`;
-    frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-    frame.allowFullscreen = true;
-    frame.referrerPolicy = 'strict-origin-when-cross-origin';
-    player.append(frame);
-  }
-  function closeVideo() {
-    lightbox.hidden = true;
-    player.replaceChildren();
-    document.body.classList.remove('modal-open');
-    if (activeCard) activeCard.focus({ preventScroll: true });
-    activeCard = null;
-  }
-  closeButton.addEventListener('click', closeVideo);
-  lightbox.addEventListener('click', event => { if (event.target === lightbox) closeVideo(); });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !lightbox.hidden) closeVideo(); });
-})();
+  grid.appendChild(card);
+});
+
+function openViewer(index) {
+  activeIndex = index;
+  const project = projects[index];
+  viewerVideo.pause();
+  viewerVideo.src = `assets/videos/${project.video}`;
+  viewerTitle.textContent = project.title;
+  viewerCredit.textContent = project.credit;
+  viewer.classList.add("open");
+  viewer.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  viewerVideo.play().catch(() => {});
+}
+function closeViewer() {
+  viewerVideo.pause();
+  viewerVideo.removeAttribute("src");
+  viewerVideo.load();
+  viewer.classList.remove("open");
+  viewer.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+function stepViewer(direction) {
+  openViewer((activeIndex + direction + projects.length) % projects.length);
+}
+document.querySelector("#viewerClose").addEventListener("click", closeViewer);
+document.querySelector("#viewerPrev").addEventListener("click", () => stepViewer(-1));
+document.querySelector("#viewerNext").addEventListener("click", () => stepViewer(1));
+viewer.addEventListener("click", event => { if (event.target === viewer) closeViewer(); });
+document.addEventListener("keydown", event => {
+  if (!viewer.classList.contains("open")) return;
+  if (event.key === "Escape") closeViewer();
+  if (event.key === "ArrowLeft") stepViewer(-1);
+  if (event.key === "ArrowRight") stepViewer(1);
+});
+document.querySelector("#year").textContent = new Date().getFullYear();
